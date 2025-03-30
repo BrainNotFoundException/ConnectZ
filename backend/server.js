@@ -7,12 +7,14 @@ require('dotenv').config()
 const port = 5000
 const app = express()
 
-const db_connection = mongoose.connect(`mongodb+srv://ghostgamerinsane:${process.env.DB_PASS}@logindata.4udiaeq.mongodb.net/`)
+const db_connection = mongoose.connect(`${process.env.DB_STRING}`)
 
 
 app.use(express.static("public"))
 
-
+app.get('/interest', (req, res)=>{
+    //render the interest stack page
+})
 
 app.get('/', (req, res)=>{
     //render the login page
@@ -49,6 +51,14 @@ app.post('/register', (req, res)=>{
     )
 })
 
+app.post('/setinterests', (req, res)=>{
+    //set user interests here
+})
+
 app.listen(port, ()=>{
     console.log('Server up and running on port 5k')
+})
+
+mongoose.connection.once('open', ()=>{
+    console.log("Connected to MongoDB")
 })

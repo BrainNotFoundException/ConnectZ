@@ -4,7 +4,8 @@ const LoginData = new mongoose.Schema({
     name: String,
     username: String,
     email: String,
-    password: String
+    password: String,
+    interests: [String]
 })
 
 const userModel = mongoose.model("users", LoginData)
