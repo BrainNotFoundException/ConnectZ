@@ -22,9 +22,28 @@ app.get('/signup', (req, res)=>{
     //render the signup page
 })
 
+app.post('/login', (req, res)=>{
+    const {username, pass} = req.body
+    let login = false
+    userModel.findOne({username: username})
+    .then(user =>{
+        if(user){
+            if(user.password == pass){
+                //log the user in
+                res.json('Login.')
+                login = true;
+            }
+        }
+    })
+    if(!login){
+        //reset login parameters and retry login
+        res.json("Incorrect username or password!")
+    }
+})
+
 app.post('/register', (req, res)=>{
     userModel.create(req.body).then(
-        user=> res.json(user)
+        users=> res.json(users)
     ).catch(
         err=>res.json(err)
     )
