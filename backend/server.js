@@ -11,12 +11,14 @@ const db_connection = mongoose.connect(`${process.env.DB_STRING}`)
 
 
 app.use(express.static("public"))
+app.use(express.json())
 
 //GET functions
 
 app.get('/', (req, res)=>{
     //render the login page
     //post to /login for logging the user in
+    res.send("Sup")
 })
 
 app.get('/signup', (req, res)=>{
@@ -33,30 +35,33 @@ app.get('/interest', (req, res)=>{
 //POST functions
 
 app.post('/login', (req, res)=>{
-    var {username, pass} = req.body
+    console.log("\nLogin Attempt\n")
     let login = false
+
+    let {username, password} = req.body
+    
     userModel.findOne({username: username})
     .then(user =>{
         if(user){
-            if(user.password == pass){
+            if(user.password == password){
                 //log the user in
-                res.json('Login.')
+                res.json({logged_in: true})
                 login = true;
             }
         }
     })
     if(!login){
         //reset login parameters and retry login
-        res.json("Incorrect username or password!")
+        res.json({logged_in: false})
     }
 })
 
 app.post('/register', (req, res)=>{
-    let new_user = res.body
+    let new_user = req.body
     userModel.findOne({username: new_user.username})
     .then(user=>{
         if(user){
-            res.send("User already exists please try logging in!")
+            res.json({new_user: false})
         }else{
             userModel.create(req.body).then(
                 users=> res.json(users)
@@ -77,11 +82,9 @@ app.post('/setinterests', (req, res)=>{
             update.interests = interest_stack
             userModel.findOneAndUpdate({username: username}, update, (err, doc)=>{
                 if(err){
-                    console.log(err)
-                    res.send('Error encountered check logs')
+                    res.json(err)
                 }else{
-                    console.log('Database has been updated Successfully!')
-                    res.send('Interests updated')
+                    res.json({database_update: true})
                 }
             })
         }
