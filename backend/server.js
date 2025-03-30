@@ -12,20 +12,28 @@ const db_connection = mongoose.connect(`${process.env.DB_STRING}`)
 
 app.use(express.static("public"))
 
-app.get('/interest', (req, res)=>{
-    //render the interest stack page
-})
+//GET functions
 
 app.get('/', (req, res)=>{
     //render the login page
+    //post to /login for logging the user in
 })
 
 app.get('/signup', (req, res)=>{
     //render the signup page
+    //post to /register for registering a new user
 })
 
+app.get('/interest', (req, res)=>{
+    //render the interest stack page
+    //post to /setinterests to set interests
+})
+
+
+//POST functions
+
 app.post('/login', (req, res)=>{
-    const {username, pass} = req.body
+    var {username, pass} = req.body
     let login = false
     userModel.findOne({username: username})
     .then(user =>{
@@ -44,15 +52,40 @@ app.post('/login', (req, res)=>{
 })
 
 app.post('/register', (req, res)=>{
-    userModel.create(req.body).then(
-        users=> res.json(users)
-    ).catch(
-        err=>res.json(err)
-    )
+    let new_user = res.body
+    userModel.findOne({username: new_user.username})
+    .then(user=>{
+        if(user){
+            res.send("User already exists please try logging in!")
+        }else{
+            userModel.create(req.body).then(
+                users=> res.json(users)
+            ).catch(
+                err=>res.json(err)
+            )
+        }
+    })
 })
 
 app.post('/setinterests', (req, res)=>{
-    //set user interests here
+    let username = res.body.username
+    let interest_stack = res.body.interest_stack
+    userModel.findOne({username: username})
+    .then(user=>{
+        if (user){
+            let update = userModel.findOne({username: username})
+            update.interests = interest_stack
+            userModel.findOneAndUpdate({username: username}, update, (err, doc)=>{
+                if(err){
+                    console.log(err)
+                    res.send('Error encountered check logs')
+                }else{
+                    console.log('Database has been updated Successfully!')
+                    res.send('Interests updated')
+                }
+            })
+        }
+    })
 })
 
 app.listen(port, ()=>{
