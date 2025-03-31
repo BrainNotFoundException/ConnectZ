@@ -3,7 +3,7 @@ import { Text, StyleSheet } from 'react-native';
 
 function EventsPage({navigation}) {
     return (
-        <Text>Sup</Text>
+        <Text> Sup </Text>
     );
 }
 
