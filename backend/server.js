@@ -1,4 +1,6 @@
-const express = require('express')
+// NEEDS TO BE REWRITTEN FOR NEW CHANGES
+
+/*const express = require('express')
 const bcrypt = require('bcrypt')
 const userModel = require('./config')
 const mongoose = require('mongoose')
@@ -97,4 +99,4 @@ app.listen(port, ()=>{
 
 mongoose.connection.once('open', ()=>{
     console.log("Connected to MongoDB")
-})
+})*/
