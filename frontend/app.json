@@ -28,9 +28,12 @@
       [
         "expo-font",
         {
-          "fonts": ["./app/assets/fonts/Comfortaa.ttf"]
+          "fonts": [
+            "./app/assets/fonts/Comfortaa.ttf"
+          ]
         }
-      ]
+      ],
+      "expo-router"
     ]
   }
 }
