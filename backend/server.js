@@ -90,7 +90,7 @@ app.post('/getevents', (req, res)=>{
 
 app.post('/getusers', (req, res) => {
 
-    exec('python ../ml/user_recommender_model.py', (error, stdout, stderr) =>{
+    exec(`python ../ml/user_recommender_model.py ${req.body.user_id}`, (error, stdout, stderr) =>{
         if(error){
             res.json(error)
         }
@@ -98,7 +98,7 @@ app.post('/getusers', (req, res) => {
             console.error(stderr)
             res.json(stderr)
         }
-        res.json(stdout)
+        res.json(JSON.stringify(stdout))
     })
 
 })
