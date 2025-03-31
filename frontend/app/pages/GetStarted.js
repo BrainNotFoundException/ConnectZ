@@ -1,12 +1,15 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, View } from 'react-native';
+import { ImageBackground, StyleSheet, View, Text } from 'react-native';
+import { useFonts } from 'expo-font';
 
 function GetStarted(props) {
     return (
         <ImageBackground 
         style= {styles.background}
-        source={require('../assets/splash-icon.png')}>
-            <View style={styles.startButton}></View>
+        source={require('../assets/start_background.png')}>
+            <View style={styles.startButton}>
+                <Text style={styles.textStyle}>Get Started</Text>
+            </View>
         </ImageBackground>
     );
 }
@@ -16,9 +19,20 @@ const styles = StyleSheet.create({
         flex:1,
     },
     startButton: {
-        width: 100,
-        height: 20,
+        width: '60%',
+        height: '7%',
+        alignSelf: 'center',
+        backgroundColor: '#3435fa',
+        borderRadius: 40,
+        marginTop: "130%",
+        justifyContent: 'center',
     },
+    textStyle:{
+        fontFamily: 'Comfortaa',
+        alignSelf: 'center',
+        color: "white",
+        fontSize: 20,
+    }
 })
 
 export default GetStarted;
