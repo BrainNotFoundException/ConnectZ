@@ -1,9 +1,9 @@
-// NEEDS TO BE REWRITTEN FOR NEW CHANGES
-
-/*const express = require('express')
-const bcrypt = require('bcrypt')
+const express = require('express')
+//const bcrypt = require('bcrypt')
 const userModel = require('./config')
 const mongoose = require('mongoose')
+const {exec} = require('child_process') 
+const { stdout } = require('process')
 require('dotenv').config()
 
 const port = 5000
@@ -14,27 +14,6 @@ const db_connection = mongoose.connect(`${process.env.DB_STRING}`)
 
 app.use(express.static("public"))
 app.use(express.json())
-
-//GET functions
-
-app.get('/', (req, res)=>{
-    //render the login page
-    //post to /login for logging the user in
-    res.send("Sup")
-})
-
-app.get('/signup', (req, res)=>{
-    //render the signup page
-    //post to /register for registering a new user
-})
-
-app.get('/interest', (req, res)=>{
-    //render the interest stack page
-    //post to /setinterests to set interests
-})
-
-
-//POST functions
 
 app.post('/login', (req, res)=>{
     console.log("\nLogin Attempt\n")
@@ -93,10 +72,66 @@ app.post('/setinterests', (req, res)=>{
     })
 })
 
+app.post('/getevents', (req, res)=>{
+    
+    exec('python ../ml/event_recommender_model.py', (error, stdout, stderr) =>{
+        if(error){
+            console.error(error)
+            res.json(error)
+        }
+        if(stderr){
+            console.error(stderr)
+            res.json(stderr)
+        }
+        res.json(stdout)
+    })
+
+})
+
+app.post('/getusers', (req, res) => {
+
+    exec('python ../ml/user_recommender_model.py', (error, stdout, stderr) =>{
+        if(error){
+            res.json(error)
+        }
+        if(stderr){
+            console.error(stderr)
+            res.json(stderr)
+        }
+        res.json(stdout)
+    })
+
+})
+
 app.listen(port, ()=>{
     console.log('Server up and running on port 5k')
 })
 
 mongoose.connection.once('open', ()=>{
     console.log("Connected to MongoDB")
-})*/
+})
+
+
+/*ignore for now ig
+
+//GET functions
+
+app.get('/', (req, res)=>{
+    //render the login page
+    //post to /login for logging the user in
+    res.send("Sup")
+})
+
+app.get('/signup', (req, res)=>{
+    //render the signup page
+    //post to /register for registering a new user
+})
+
+app.get('/interest', (req, res)=>{
+    //render the interest stack page
+    //post to /setinterests to set interests
+})
+
+
+//POST functions
+*/
